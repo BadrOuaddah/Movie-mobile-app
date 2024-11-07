@@ -1,51 +1,46 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import {
-  Button,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  ScrollView,
-} from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
+import SearchLabel from "./components/SearchLabel";
 
 export default function App() {
-  const [name, setname] = useState("");
-  const handleClick = () => {};
-  const [people, setpeople] = useState([
-    { name: "Ahmed", key: "1" },
-    { name: "Ali", key: "2" },
-    { name: "Omar", key: "3" },
-    { name: "Mohammed", key: "4" },
-    { name: "Saad", key: "5" },
-    { name: "Rachid", key: "6" },
-    { name: "Brahim", key: "7" },
-  ]);
+  const [movie, setMovie] = useState(null);
+
+  const getMovie = async () => {
+    try {
+      const url = `http://www.omdbapi.com/?i=tt3896198&apikey=31c10f94`;
+      const response = await fetch(url);
+      const responseJson = await response.json();
+      setMovie(responseJson);
+    } catch (error) {
+      console.error("Error fetching movie:", error);
+    }
+  };
+
+  const handleClick = () => {
+    getMovie();
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.boldText}>Hello World!</Text>
+      <Text style={styles.boldText}>E-Movie application</Text>
+      <SearchLabel></SearchLabel>
       <Text></Text>
-      <Text style={styles.boldText}>Enter your name : </Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={(text) => setname(text)}
-        placeholder="Name"
-      ></TextInput>
       <View>
         <Button title="Click here" onPress={handleClick} />
       </View>
-      <StatusBar style="auto" />
-      <Text></Text>
-      <ScrollView>
-        {people.map((item) => {
-          return (
-            <View key={item.key}>
-              <Text style={styles.item}>{item.name}</Text>
-            </View>
-          );
-        })}
-      </ScrollView>
+      <Text ></Text>
+      <Text ></Text>
+      {/* <StatusBar style="auto" /> */}
+      {movie && (
+        <View style={styles.movieDetails}>
+          <Text style={styles.title}>{movie.Title}</Text>
+          <Text>Year: {movie.Year}</Text>
+          <Text>Genre: {movie.Genre}</Text>
+          <Text>Language: {movie.Language}</Text>
+          <Text>Country: {movie.Country}</Text>
+        </View>
+      )}
       <Text></Text>
     </View>
   );

@@ -21,9 +21,9 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 8,
-    backgroundColor: "#f1f1f1",
-    borderRadius: 5,
+    padding: 10,
+    backgroundColor: "#C0C0C0",
+    borderRadius: 50,
     marginVertical: 10,
   },
   icon: {

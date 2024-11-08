@@ -1,17 +1,23 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View, TextInput } from "react-native";
 import SearchLabel from "./components/SearchLabel";
 
 export default function App() {
   const [movie, setMovie] = useState(null);
+  const [movieTitle, setMovieTitle] = useState("");
 
   const getMovie = async () => {
     try {
-      const url = `http://www.omdbapi.com/?i=tt3896198&apikey=31c10f94`;
+      const url = `http://www.omdbapi.com/?t=${movieTitle}&apikey=31c10f94`;
       const response = await fetch(url);
       const responseJson = await response.json();
-      setMovie(responseJson);
+      if (responseJson.Response === "True") {
+        setMovie(responseJson);
+      } else {
+        setMovie(null);
+        alert("Movie not found.");
+      }
     } catch (error) {
       console.error("Error fetching movie:", error);
     }
@@ -24,13 +30,15 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.boldText}>E-Movie application</Text>
-      <SearchLabel></SearchLabel>
+      {/* <SearchLabel></SearchLabel> */}
+      <Text></Text>
+      <SearchLabel value={movieTitle} setSearchValue={setMovieTitle} />
       <Text></Text>
       <View>
         <Button title="Click here" onPress={handleClick} />
       </View>
-      <Text ></Text>
-      <Text ></Text>
+      <Text></Text>
+      <Text></Text>
       {/* <StatusBar style="auto" /> */}
       {movie && (
         <View style={styles.movieDetails}>
@@ -52,6 +60,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 30,
   },
 
   boldText: {

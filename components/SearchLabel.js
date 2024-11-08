@@ -10,7 +10,7 @@ const SearchBox = ({ value, setSearchValue }) => {
         style={styles.inputField}
         value={value}
         onChangeText={setSearchValue}
-        placeholder="Type to search..."
+        placeholder="Type here to search..."
         placeholderTextColor="#666"
       />
     </View>

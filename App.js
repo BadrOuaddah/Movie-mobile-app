@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { Button, StyleSheet, Text, View, TextInput } from "react-native";
+import { Button, StyleSheet, Text, View, TextInput, Image } from "react-native";
 import SearchLabel from "./components/SearchLabel";
 
 export default function App() {
@@ -38,10 +38,12 @@ export default function App() {
         <Button title="Click here" onPress={handleClick} />
       </View>
       <Text></Text>
+  
       <Text></Text>
-      {/* <StatusBar style="auto" /> */}
+      <StatusBar style="auto" />
       {movie && (
         <View style={styles.movieDetails}>
+          <Image source={{ uri: movie.Poster }} style={styles.image} />
           <Text style={styles.title}>{movie.Title}</Text>
           <Text>Year: {movie.Year}</Text>
           <Text>Genre: {movie.Genre}</Text>
@@ -79,5 +81,10 @@ const styles = StyleSheet.create({
     padding: 30,
     backgroundColor: "#a28089",
     fontSize: 20,
+  },
+  image: {
+    width: 200,
+    height: 300,
+    marginBottom: 15,
   },
 });

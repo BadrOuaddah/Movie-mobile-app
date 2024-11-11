@@ -38,7 +38,7 @@ export default function App() {
         <Button title="Click here" onPress={handleClick} />
       </View>
       <Text></Text>
-  
+
       <Text></Text>
       <StatusBar style="auto" />
       {movie && (
@@ -62,29 +62,29 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 30,
+    paddingHorizontal: 30
   },
 
   boldText: {
     fontWeight: "bold",
-    fontSize: 25,
+    fontSize: 25
   },
   input: {
     borderWidth: 1,
     borderColor: "#111",
     padding: 8,
     margin: 10,
-    width: 200,
+    width: 200
   },
   item: {
     marginTop: 24,
     padding: 30,
     backgroundColor: "#a28089",
-    fontSize: 20,
+    fontSize: 20
   },
   image: {
     width: 200,
     height: 300,
-    marginBottom: 15,
-  },
+    marginBottom: 15
+  }
 });

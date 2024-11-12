@@ -1,8 +1,8 @@
-import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { Button, StyleSheet, Text, View, TextInput, Image } from "react-native";
-import SearchLabel from "./components/SearchLabel";
+import { Button, StyleSheet, Text, View, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import SearchLabel from "./components/SearchLabel";
+import ToastMessage, { showToast } from "./components/ToastMessage";
 
 export default function App() {
   const [movie, setMovie] = useState(null);
@@ -15,12 +15,14 @@ export default function App() {
       const responseJson = await response.json();
       if (responseJson.Response === "True") {
         setMovie(responseJson);
+        showToast("success", "✔️ Movie found");
       } else {
         setMovie(null);
-        alert("Movie not found.");
+        showToast("error", "❌ Movie not found");
       }
     } catch (error) {
       console.error("Error fetching movie:", error);
+      showToast("error", "Error fetching movie ❌");
     }
   };
 
@@ -29,36 +31,26 @@ export default function App() {
   };
 
   return (
-    <LinearGradient colors={["#2c3e50", "#bdc3c7"]} style={styles.gradient}>
-      <View style={styles.container}>
-        <Text style={styles.boldText}>E-Movie Application</Text>
-        <SearchLabel value={movieTitle} setSearchValue={setMovieTitle} />
-        <View>
-          <Button title="Click here" onPress={handleClick} />
+    <LinearGradient colors={["#2c3e50", "#bdc3c7"]} style={styles.container}>
+      <Text style={styles.boldText}>E-Movie Application</Text>
+      <SearchLabel value={movieTitle} setSearchValue={setMovieTitle} />
+      <Button title="Click here" onPress={handleClick} />
+      {movie && (
+        <View style={styles.movieDetails}>
+          <Image source={{ uri: movie.Poster }} style={styles.image} />
+          <Text style={styles.title}>{movie.Title}</Text>
+          <Text>Year: {movie.Year}</Text>
+          <Text>Genre: {movie.Genre}</Text>
+          <Text>Language: {movie.Language}</Text>
+          <Text>Country: {movie.Country}</Text>
         </View>
-        <Text></Text>
-        <Text></Text>
-        <StatusBar style="auto" />
-        {movie && (
-          <View style={styles.movieDetails}>
-            <Image source={{ uri: movie.Poster }} style={styles.image} />
-            <Text style={styles.title}>{movie.Title}</Text>
-            <Text>Year: {movie.Year}</Text>
-            <Text>Genre: {movie.Genre}</Text>
-            <Text>Language: {movie.Language}</Text>
-            <Text>Country: {movie.Country}</Text>
-          </View>
-        )}
-      </View>
+      )}
+      <ToastMessage />
     </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  gradient: {
-    flex: 1,
-    justifyContent: "center"
-  },
   container: {
     flex: 1,
     alignItems: "center",
@@ -67,8 +59,11 @@ const styles = StyleSheet.create({
   },
   boldText: {
     fontWeight: "bold",
-    fontSize: 25,
-    color: "#fff"
+    fontSize: 25
+  },
+  movieDetails: {
+    alignItems: "center",
+    marginTop: 20
   },
   image: {
     width: 200,

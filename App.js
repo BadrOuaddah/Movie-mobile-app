@@ -63,7 +63,18 @@ const styles = StyleSheet.create({
   },
   movieDetails: {
     alignItems: "center",
-    marginTop: 20
+    marginTop: 20,
+    backgroundColor: '#C0C0C0',
+    borderRadius: 10,
+    padding: 16,
+    marginTop: 16,
+    width: 320,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+    alignItems: 'center'
   },
   image: {
     width: 200,

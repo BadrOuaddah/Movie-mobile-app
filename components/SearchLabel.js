@@ -24,16 +24,16 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "#C0C0C0",
     borderRadius: 50,
-    marginVertical: 10,
+    marginVertical: 10
   },
   icon: {
-    marginRight: 8,
+    marginRight: 8
   },
   inputField: {
     flex: 1,
     fontSize: 16,
-    color: "#333",
-  },
+    color: "#333"
+  }
 });
 
 export default SearchBox;

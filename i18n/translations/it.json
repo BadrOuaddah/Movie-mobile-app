@@ -1,6 +1,6 @@
 {
     "title": "Applicazione E-Movie",
-    "searchPlaceholder": "Cerca un film",
+    "searchPlaceholder": "Digita qui per cercare un film...",
     "clickHere": "Clicca qui",
     "movieFound": "✔️ Film trovato",
     "movieNotFound": "❌ Film non trovato",

@@ -1,6 +1,6 @@
 {
     "title": "E-Movie Application",
-    "searchPlaceholder": "Search for a movie",
+    "searchPlaceholder": "Type here to search for a movie...",
     "clickHere": "Click here",
     "movieFound": "✔️ Movie found",
     "movieNotFound": "❌ Movie not found",

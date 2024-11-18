@@ -1,10 +1,16 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import i18next from "i18next";
 import { Button, StyleSheet, Text, View, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useTranslation } from "react-i18next";
 import SearchLabel from "./components/SearchLabel";
 import ToastMessage, { showToast } from "./components/ToastMessage";
+import "./i18n/i18n.config";
+
 
 export default function App() {
+  const { t } = useTranslation();
+  const [language, setLanguage] = useState("en");
   const [movie, setMovie] = useState(null);
   const [movieTitle, setMovieTitle] = useState("");
 
@@ -15,14 +21,14 @@ export default function App() {
       const responseJson = await response.json();
       if (responseJson.Response === "True") {
         setMovie(responseJson);
-        showToast("success", "✔️ Movie found");
+        showToast("success", t("movieFound"));
       } else {
         setMovie(null);
-        showToast("error", "❌ Movie not found");
+        showToast("error", t("movieNotFound"));
       }
     } catch (error) {
       console.error("Error fetching movie:", error);
-      showToast("error", "Error fetching movie ❌");
+      showToast("error", t("errorFetching"));
     }
   };
 
@@ -30,21 +36,35 @@ export default function App() {
     getMovie();
   };
 
+  const changeLanguage = (lang) => {
+    i18next.changeLanguage(lang);
+    setLanguage(lang);
+  };
+
   return (
     <LinearGradient colors={["#2c3e50", "#bdc3c7"]} style={styles.container}>
-      <Text style={styles.boldText}>E-Movie Application</Text>
-      <SearchLabel value={movieTitle} setSearchValue={setMovieTitle} />
-      <Button title="Click here" onPress={handleClick} />
+      <Text style={styles.boldText}>{t("title")}</Text>
+      <SearchLabel
+        value={movieTitle}
+        setSearchValue={setMovieTitle}
+      />
+      <Button title={t("clickHere")} onPress={handleClick} />
       {movie && (
         <View style={styles.movieDetails}>
           <Image source={{ uri: movie.Poster }} style={styles.image} />
           <Text style={styles.title}>{movie.Title}</Text>
-          <Text>Year: {movie.Year}</Text>
-          <Text>Genre: {movie.Genre}</Text>
-          <Text>Language: {movie.Language}</Text>
-          <Text>Country: {movie.Country}</Text>
+          <Text>{t("details.year")}: {movie.Year}</Text>
+          <Text>{t("details.genre")}: {movie.Genre}</Text>
+          <Text>{t("details.language")}: {movie.Language}</Text>
+          <Text>{t("details.country")}: {movie.Country}</Text>
         </View>
       )}
+      <View style={styles.languageSwitcher}>
+        <Button title="English" onPress={() => changeLanguage("en")} />
+        <Button title="Français" onPress={() => changeLanguage("fr")} />
+        <Button title="Español" onPress={() => changeLanguage("es")} />
+        <Button title="Italiano" onPress={() => changeLanguage("it")} />
+      </View>
       <ToastMessage />
     </LinearGradient>
   );
@@ -73,12 +93,17 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
-    elevation: 5,
-    alignItems: "center"
+    elevation: 5
   },
   image: {
     width: 200,
     height: 300,
     marginBottom: 15
+  },
+  languageSwitcher: {
+    flexDirection: "row",
+    marginTop: 20,
+    justifyContent: "space-between",
+    width: "100%"
   }
 });

@@ -10,22 +10,22 @@ on:
 
 jobs:
   run-linters:
-    name: Run linters
+    name: Run Linters
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out Git repository
+      - name: Check out repository
         uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: 12
-
+          node-version: 16
       - name: Install Node.js dependencies
-        run: npm ci
+        run: |
+          npm ci || npm install
 
-      - name: Run linters
+      - name: Run ESLint and Prettier
         uses: wearerequired/lint-action@v2
         with:
           eslint: true

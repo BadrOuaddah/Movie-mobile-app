@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import 'intl';
+import '@formatjs/intl-pluralrules/polyfill';
 import i18next from "i18next";
 import { Button, StyleSheet, Text, View, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";

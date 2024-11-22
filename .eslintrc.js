@@ -17,9 +17,14 @@ module.exports = {
 			}
 		}
 	],
+	"parser": "@babel/eslint-parser",
 	"parserOptions": {
 		"ecmaVersion": "latest",
-		"sourceType": "module"
+		"sourceType": "module",
+		"requireConfigFile": false,
+		"ecmaFeatures": {
+			"jsx": true
+		}
 	},
 	"rules": {
 		"indent": [

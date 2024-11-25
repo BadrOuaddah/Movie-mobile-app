@@ -1,0 +1,15 @@
+{
+    "title": "Aplicación E-Movie",
+    "searchPlaceholder": "Escribe aquí para buscar película...",
+    "clickHere": "Haz clic aquí",
+    "movieFound": "✔️ Película encontrada",
+    "movieNotFound": "❌ Película no encontrada",
+    "errorFetching": "Error al buscar la película ❌",
+    "details": {
+      "year": "Año",
+      "genre": "Género",
+      "language": "Idioma",
+      "country": "País"
+    }
+  }
+  

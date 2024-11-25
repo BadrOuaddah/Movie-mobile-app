@@ -9,8 +9,7 @@ on:
       - master
 
 jobs:
-  run-linters:
-    name: Run Linters
+  lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,12 +20,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Install Node.js dependencies
-        run: |
-          npm ci || npm install
 
-      - name: Run ESLint and Prettier
-        uses: wearerequired/lint-action@v2
-        with:
-          eslint: true
-          prettier: true
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linters
+        run: |
+          npx eslint . --ext .js,.jsx,.ts,.tsx
+          npx prettier --check .

@@ -55,11 +55,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-		paddingHorizontal: 30
+		paddingHorizontal: 30,
 	},
 	boldText: {
 		fontWeight: "bold",
-		fontSize: 25
+		fontSize: 25,
 	},
 	movieDetails: {
 		alignItems: "center",
@@ -76,11 +76,11 @@ const styles = StyleSheet.create({
 		shadowRadius: 4,
 		elevation: 5,
 		// eslint-disable-next-line no-dupe-keys
-		alignItems: "center"
+		alignItems: "center",
 	},
 	image: {
 		width: 200,
 		height: 300,
-		marginBottom: 15
-	}
+		marginBottom: 15,
+	},
 });

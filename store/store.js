@@ -10,8 +10,8 @@ const store = configureStore({
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({
 			thunk: false,
-			serializableCheck: false
-		}).concat(sagaMiddleware)
+			serializableCheck: false,
+		}).concat(sagaMiddleware),
 });
 
 sagaMiddleware.run(rootSaga);

@@ -3,6 +3,7 @@ import i18next from "i18next";
 import { Button, StyleSheet, Text, View, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
+import { Picker } from "@react-native-picker/picker";
 import SearchLabel from "./components/SearchLabel";
 import ToastMessage, { showToast } from "./components/ToastMessage";
 import "./i18n/i18n.config";
@@ -39,6 +40,7 @@ export default function App() {
   const changeLanguage = (lang) => {
     i18next.changeLanguage(lang);
     setLanguage(lang);
+    showToast("success", `Language switched to ${lang}`);
   };
 
   return (
@@ -60,10 +62,17 @@ export default function App() {
         </View>
       )}
       <View style={styles.languageSwitcher}>
-        <Button title="English" onPress={() => changeLanguage("en")} />
-        <Button title="Français" onPress={() => changeLanguage("fr")} />
-        <Button title="Español" onPress={() => changeLanguage("es")} />
-        <Button title="Italiano" onPress={() => changeLanguage("it")} />
+        <Text style={styles.pickerLabel}>{t("🌐 Select language :")}</Text>
+        <Picker
+          selectedValue={language}
+          onValueChange={(itemValue) => changeLanguage(itemValue)}
+          style={styles.picker}
+        >
+          <Picker.Item label="English" value="en" />
+          <Picker.Item label="Français" value="fr" />
+          <Picker.Item label="Español" value="es" />
+          <Picker.Item label="Italiano" value="it" />
+        </Picker>
       </View>
       <ToastMessage />
     </LinearGradient>
@@ -79,7 +88,8 @@ const styles = StyleSheet.create({
   },
   boldText: {
     fontWeight: "bold",
-    fontSize: 25
+    fontSize: 25,
+    marginBottom: 20,
   },
   movieDetails: {
     alignItems: "center",
@@ -101,9 +111,18 @@ const styles = StyleSheet.create({
     marginBottom: 15
   },
   languageSwitcher: {
-    flexDirection: "row",
     marginTop: 20,
-    justifyContent: "space-between",
-    width: "100%"
-  }
+    width: "100%",
+  },
+  pickerLabel: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  picker: {
+    backgroundColor: "#ccc",
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#ccc",
+  },
 });

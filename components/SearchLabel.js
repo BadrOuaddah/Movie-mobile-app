@@ -6,19 +6,19 @@ import { useTranslation } from "react-i18next";
 
 // eslint-disable-next-line react/prop-types
 const SearchBox = ({ value, setSearchValue }) => {
-  const { t } = useTranslation();
-  return (
-    <View style={styles.inputContainer}>
-      <Icon name="search" size={20} color="#000" style={styles.icon} />
-      <TextInput
-        style={styles.inputField}
-        value={value}
-        onChangeText={setSearchValue}
-        placeholder={t("searchPlaceholder")}
-        placeholderTextColor="#666"
-      />
-    </View>
-  );
+	const { t } = useTranslation();
+	return (
+		<View style={styles.inputContainer}>
+			<Icon name="search" size={20} color="#000" style={styles.icon} />
+			<TextInput
+				style={styles.inputField}
+				value={value}
+				onChangeText={setSearchValue}
+				placeholder={t("searchPlaceholder")}
+				placeholderTextColor="#666"
+			/>
+		</View>
+	);
 };
 
 const styles = StyleSheet.create({

@@ -1,30 +1,31 @@
 import React, { useState } from "react";
 import i18next from "i18next";
-import { Button, StyleSheet, Text, View, Image } from "react-native";
+import { Button, StyleSheet, Text, View, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
 import { Picker } from "@react-native-picker/picker";
 import SearchLabel from "./components/SearchLabel";
 import ToastMessage, { showToast } from "./components/ToastMessage";
+import MovieList from "./components/MovieList";
 import "./i18n/i18n.config";
 
 
 export default function App() {
   const { t } = useTranslation();
   const [language, setLanguage] = useState("en");
-  const [movie, setMovie] = useState(null);
   const [movieTitle, setMovieTitle] = useState("");
+  const [movies, setMovies] = useState([]);
 
   const getMovie = async () => {
     try {
-      const url = `http://www.omdbapi.com/?t=${movieTitle}&apikey=31c10f94`;
+      const url = `http://www.omdbapi.com/?s=${movieTitle}&apikey=31c10f94`;
       const response = await fetch(url);
       const responseJson = await response.json();
       if (responseJson.Response === "True") {
-        setMovie(responseJson);
+        setMovies(responseJson.Search);
         showToast("success", t("movieFound"));
       } else {
-        setMovie(null);
+        setMovies([]);
         showToast("error", t("movieNotFound"));
       }
     } catch (error) {
@@ -46,20 +47,15 @@ export default function App() {
   return (
     <LinearGradient colors={["#2c3e50", "#bdc3c7"]} style={styles.container}>
       <Text style={styles.boldText}>{t("title")}</Text>
-      <SearchLabel
-        value={movieTitle}
-        setSearchValue={setMovieTitle}
-      />
-      <Button title={t("clickHere")} onPress={handleClick} />
-      {movie && (
-        <View style={styles.movieDetails}>
-          <Image source={{ uri: movie.Poster }} style={styles.image} />
-          <Text style={styles.title}>{movie.Title}</Text>
-          <Text>{t("details.year")}: {movie.Year}</Text>
-          <Text>{t("details.genre")}: {movie.Genre}</Text>
-          <Text>{t("details.language")}: {movie.Language}</Text>
-          <Text>{t("details.country")}: {movie.Country}</Text>
-        </View>
+      <SearchLabel value={movieTitle} setSearchValue={setMovieTitle} />
+      <Button title={t("clickHere")} onPress={handleClick} />  
+      <Text></Text>    
+      {movies.length > 0 ? (
+        <ScrollView>
+          <MovieList movies={movies} />
+        </ScrollView>
+      ) : (
+        <Text>{t("No Movies Found")}</Text>
       )}
       <View style={styles.languageSwitcher}>
         <Text style={styles.pickerLabel}>{t("🌐 Select language :")}</Text>
@@ -74,6 +70,7 @@ export default function App() {
           <Picker.Item label="Italiano" value="it" />
         </Picker>
       </View>
+      <Text></Text>
       <ToastMessage />
     </LinearGradient>
   );
@@ -112,8 +109,8 @@ const styles = StyleSheet.create({
   },
   languageSwitcher: {
     marginTop: 20,
-    position: "absolute",
-    bottom: 20,
+    // position: "absolute",
+    // bottom: 20,
   },
   pickerLabel: {
     fontSize: 16,

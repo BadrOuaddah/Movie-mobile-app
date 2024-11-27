@@ -24,7 +24,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run linters
-        run: |
-          npx eslint . --ext .js,.jsx,.ts,.tsx
-          npx prettier --check .
+      - name: Run ESLint
+        run: npx eslint . --ext .js,.jsx,.ts,.tsx

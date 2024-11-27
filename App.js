@@ -112,7 +112,8 @@ const styles = StyleSheet.create({
   },
   languageSwitcher: {
     marginTop: 20,
-    width: "100%",
+    position: "absolute",
+    bottom: 20,
   },
   pickerLabel: {
     fontSize: 16,

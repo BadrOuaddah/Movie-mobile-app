@@ -9,7 +9,6 @@ import ToastMessage, { showToast } from "./components/ToastMessage";
 import MovieList from "./components/MovieList";
 import "./i18n/i18n.config";
 
-
 export default function App() {
   const { t } = useTranslation();
   const [language, setLanguage] = useState("en");
@@ -109,8 +108,6 @@ const styles = StyleSheet.create({
   },
   languageSwitcher: {
     marginTop: 20,
-    // position: "absolute",
-    // bottom: 20,
   },
   pickerLabel: {
     fontSize: 16,

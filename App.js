@@ -33,16 +33,15 @@ export default function App() {
     }
   };
 
-  const handleClick = () => {
-    getMovie();
-  };
+	const handleClick = () => {
+		getMovie();
+	};
 
-  const changeLanguage = (lang) => {
-    i18next.changeLanguage(lang);
-    setLanguage(lang);
-    showToast("success", `Language switched to ${lang}`);
-  };
-
+	const changeLanguage = (lang) => {
+		i18next.changeLanguage(lang);
+		setLanguage(lang);
+		showToast("success", `Language switched to ${lang}`);
+	};
   return (
     <LinearGradient colors={["#2c3e50", "#bdc3c7"]} style={styles.container}>
       <Text style={styles.boldText}>{t("title")}</Text>

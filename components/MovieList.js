@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { View, Image, StyleSheet } from "react-native";
 
 const MovieList = (props) => {
@@ -15,6 +16,14 @@ const MovieList = (props) => {
 			))}
 		</View>
 	);
+};
+
+MovieList.propTypes = {
+	movies: PropTypes.arrayOf(
+		PropTypes.shape({
+			Poster: PropTypes.string.isRequired,
+		})
+	).isRequired,
 };
 
 const styles = StyleSheet.create({

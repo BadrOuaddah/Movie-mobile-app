@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import i18next from "i18next";
 import { Button, StyleSheet, Text, View, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useTranslation } from "react-i18next";
-import { Picker } from "@react-native-picker/picker";
+import { useTranslation } from "react-i18next"; // For the translation
+import { Picker } from "@react-native-picker/picker"; // For picking the language !
 import SearchLabel from "./components/SearchLabel";
-import ToastMessage, { showToast } from "./components/ToastMessage";
+import ToastMessage, { showToast } from "./components/ToastMessage"; // For showing the informative message in form toast when 
 import "./i18n/i18n.config";
 
 

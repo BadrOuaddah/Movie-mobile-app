@@ -31,7 +31,6 @@ const GET_MOVIE = gql`
 export default function App() {
 	const { t } = useTranslation();
 	const [language, setLanguage] = useState("en");
-	const [movie, setMovie] = useState(null);
 	const [movieTitle, setMovieTitle] = useState("");
 	// eslint-disable-next-line no-undef
 	const [fetchMovie, { data, loading, error }] = useLazyQuery(GET_MOVIE);
@@ -78,14 +77,16 @@ export default function App() {
 					setSearchValue={setMovieTitle}
 				/>
 				<Button title={t("clickHere")} onPress={handleClick} />
-				{movie && (
+				{loading && <Text>Loading</Text>}
+				{error && <Text style={{ color: "red" }}>errorFetching : {error.message}</Text>}
+				{data && data.getMovie && (
 					<View style={styles.movieDetails}>
-						<Image source={{ uri: movie.Poster }} style={styles.image} />
-						<Text style={styles.title}>{movie.Title}</Text>
-						<Text>{t("details.year")}: {movie.Year}</Text>
-						<Text>{t("details.genre")}: {movie.Genre}</Text>
-						<Text>{t("details.language")}: {movie.Language}</Text>
-						<Text>{t("details.country")}: {movie.Country}</Text>
+						<Image source={{ uri: data.getMovie.Poster }} style={styles.image} />
+						<Text style={styles.title}>{data.getMovie.Title}</Text>
+						<Text>{t("details.year")}: {data.getMovie.Year}</Text>
+						<Text>{t("details.genre")}: {data.getMovie.Genre}</Text>
+						<Text>{t("details.language")}: {data.getMovie.Language}</Text>
+						<Text>{t("details.country")}: {data.getMovie.Country}</Text>
 					</View>
 				)}
 				<View style={styles.languageSwitcher}>

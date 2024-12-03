@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { ApolloClient, InMemoryCache, gql, useLazyQuery, ApolloProvider } from "@apollo/client";
 import i18next from "i18next";
 import { Button, StyleSheet, Text, View, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -10,13 +10,13 @@ import ToastMessage, { showToast } from "./components/ToastMessage";
 import "./i18n/i18n.config";
 
 const client = new ApolloClient({
-	uri: "http://localhost:4000/",
+	uri: "http://10.0.2.2:4000/",
 	cache: new InMemoryCache(),
 });
 
 // eslint-disable-next-line no-undef
 const GET_MOVIE = gql`
-	query GetMovie($title: String!) {
+	query getMovie($title: String!) {
 		getMovie(title: $title) {
 			Title
 			Year
@@ -34,25 +34,6 @@ export default function App() {
 	const [movieTitle, setMovieTitle] = useState("");
 	// eslint-disable-next-line no-undef
 	const [fetchMovie, { data, loading, error }] = useLazyQuery(GET_MOVIE);
-
-	// ! Before use Apollo server (GraphQL)
-	// const getMovie = async () => {
-	// 	try {
-	// 		const url = `http://www.omdbapi.com/?t=${movieTitle}&apikey=31c10f94`;
-	// 		const response = await fetch(url);
-	// 		const responseJson = await response.json();
-	// 		if (responseJson.Response === "True") {
-	// 			setMovie(responseJson);
-	// 			showToast("success", t("movieFound"));
-	// 		} else {
-	// 			setMovie(null);
-	// 			showToast("error", t("movieNotFound"));
-	// 		}
-	// 	} catch (error) {
-	// 		console.error("Error fetching movie:", error);
-	// 		showToast("error", t("errorFetching"));
-	// 	}
-	// };
 
 	const handleClick = () => {
 		if (movieTitle) {
@@ -72,13 +53,10 @@ export default function App() {
 		<ApolloProvider client={client}>
 			<LinearGradient colors={["#2c3e50", "#bdc3c7"]} style={styles.container}>
 				<Text style={styles.boldText}>{t("title")}</Text>
-				<SearchLabel
-					value={movieTitle}
-					setSearchValue={setMovieTitle}
-				/>
+				<SearchLabel value={movieTitle} setSearchValue={setMovieTitle} />
 				<Button title={t("clickHere")} onPress={handleClick} />
 				{loading && <Text>Loading</Text>}
-				{error && <Text style={{ color: "red" }}>errorFetching : {error.message}</Text>}
+				{error && <Text style={{ color: "red" }}>Error: {error.message}</Text>}
 				{data && data.getMovie && (
 					<View style={styles.movieDetails}>
 						<Image source={{ uri: data.getMovie.Poster }} style={styles.image} />

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { ApolloClient, InMemoryCache, gql, useLazyQuery, ApolloProvider } from "@apollo/client";
 import i18next from "i18next";
 import { Button, StyleSheet, Text, View, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -9,38 +8,32 @@ import SearchLabel from "./components/SearchLabel";
 import ToastMessage, { showToast } from "./components/ToastMessage";
 import "./i18n/i18n.config";
 
-const client = new ApolloClient({
-	uri: "http://10.0.2.2:4000/",
-	cache: new InMemoryCache(),
-});
-
-// eslint-disable-next-line no-undef
-const GET_MOVIE = gql`
-	query getMovie($title: String!) {
-		getMovie(title: $title) {
-			Title
-			Year
-			Genre
-			Language
-			Country
-			Poster
-		}
-	}
-`;
-
 export default function App() {
 	const { t } = useTranslation();
 	const [language, setLanguage] = useState("en");
+	const [movie, setMovie] = useState(null);
 	const [movieTitle, setMovieTitle] = useState("");
-	// eslint-disable-next-line no-undef
-	const [fetchMovie, { data, loading, error }] = useLazyQuery(GET_MOVIE);
+
+	const getMovie = async () => {
+		try {
+			const url = `http://www.omdbapi.com/?t=${movieTitle}&apikey=31c10f94`;
+			const response = await fetch(url);
+			const responseJson = await response.json();
+			if (responseJson.Response === "True") {
+				setMovie(responseJson);
+				showToast("success", t("movieFound"));
+			} else {
+				setMovie(null);
+				showToast("error", t("movieNotFound"));
+			}
+		} catch (error) {
+			console.error("Error fetching movie:", error);
+			showToast("error", t("errorFetching"));
+		}
+	};
 
 	const handleClick = () => {
-		if (movieTitle) {
-			fetchMovie({ variables: { title: movieTitle } });
-		} else {
-			showToast("error", t("movieNotFound"));
-		}
+		getMovie();
 	};
 
 	const changeLanguage = (lang) => {
@@ -50,39 +43,38 @@ export default function App() {
 	};
 
 	return (
-		<ApolloProvider client={client}>
-			<LinearGradient colors={["#2c3e50", "#bdc3c7"]} style={styles.container}>
-				<Text style={styles.boldText}>{t("title")}</Text>
-				<SearchLabel value={movieTitle} setSearchValue={setMovieTitle} />
-				<Button title={t("clickHere")} onPress={handleClick} />
-				{loading && <Text>Loading</Text>}
-				{error && <Text style={{ color: "red" }}>Error: {error.message}</Text>}
-				{data && data.getMovie && (
-					<View style={styles.movieDetails}>
-						<Image source={{ uri: data.getMovie.Poster }} style={styles.image} />
-						<Text style={styles.title}>{data.getMovie.Title}</Text>
-						<Text>{t("details.year")}: {data.getMovie.Year}</Text>
-						<Text>{t("details.genre")}: {data.getMovie.Genre}</Text>
-						<Text>{t("details.language")}: {data.getMovie.Language}</Text>
-						<Text>{t("details.country")}: {data.getMovie.Country}</Text>
-					</View>
-				)}
-				<View style={styles.languageSwitcher}>
-					<Text style={styles.pickerLabel}>{t("🌐 Select language :")}</Text>
-					<Picker
-						selectedValue={language}
-						onValueChange={(itemValue) => changeLanguage(itemValue)}
-						style={styles.picker}
-					>
-						<Picker.Item label="English" value="en" />
-						<Picker.Item label="Français" value="fr" />
-						<Picker.Item label="Español" value="es" />
-						<Picker.Item label="Italiano" value="it" />
-					</Picker>
+		<LinearGradient colors={["#2c3e50", "#bdc3c7"]} style={styles.container}>
+			<Text style={styles.boldText}>{t("title")}</Text>
+			<SearchLabel
+				value={movieTitle}
+				setSearchValue={setMovieTitle}
+			/>
+			<Button title={t("clickHere")} onPress={handleClick} />
+			{movie && (
+				<View style={styles.movieDetails}>
+					<Image source={{ uri: movie.Poster }} style={styles.image} />
+					<Text style={styles.title}>{movie.Title}</Text>
+					<Text>{t("details.year")}: {movie.Year}</Text>
+					<Text>{t("details.genre")}: {movie.Genre}</Text>
+					<Text>{t("details.language")}: {movie.Language}</Text>
+					<Text>{t("details.country")}: {movie.Country}</Text>
 				</View>
-				<ToastMessage />
-			</LinearGradient>
-		</ApolloProvider>
+			)}
+			<View style={styles.languageSwitcher}>
+				<Text style={styles.pickerLabel}>{t("🌐 Select language :")}</Text>
+				<Picker
+					selectedValue={language}
+					onValueChange={(itemValue) => changeLanguage(itemValue)}
+					style={styles.picker}
+				>
+					<Picker.Item label="English" value="en" />
+					<Picker.Item label="Français" value="fr" />
+					<Picker.Item label="Español" value="es" />
+					<Picker.Item label="Italiano" value="it" />
+				</Picker>
+			</View>
+			<ToastMessage />
+		</LinearGradient>
 	);
 }
 

@@ -62,12 +62,16 @@ const resolvers = {
 };
 
 const server = new ApolloServer({
-	typeDefs,
-	resolvers,
+  typeDefs,
+  resolvers,
   introspection: true,
   playground: true, 
+  cors: {
+    origin: "*",
+    methods: "GET,POST"
+  }
 });
 
-server.listen().then(({ url }) => {
-	console.log(`🚀 Server ready at ${url}`);
+server.listen({ host: '0.0.0.0', port: 4000 }).then(({ url }) => {
+  console.log(`✅ Server ready at ${url}`);
 });
